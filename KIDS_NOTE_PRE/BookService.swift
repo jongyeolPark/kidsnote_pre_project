@@ -13,7 +13,7 @@ enum BookServiceProvider {
 }
 
 protocol BookServiceProtocol: AnyObject {
-    
+    func execute<T>(_ type: T.Type, token: BookServiceProvider) -> Observable<T> where T: Decodable
 }
 
 class BookService: BookServiceProtocol {
