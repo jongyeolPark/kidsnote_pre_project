@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 enum BookServiceProvider {
-    case searchList(query: String)
+    case searchList(path: String, query: String)
 }
 
 protocol BookServiceProtocol: AnyObject {
@@ -20,18 +20,24 @@ class BookService: BookServiceProtocol {
     
     static let shared = BookService()
     
+    static let baseUrl = "https://www.googleapis.com/books/v1"
+    static let apiKey = "AIzaSyBMJJd51yKruxh-HdleKwilztTTLQh6geY"
+
     private init() { }
     
     func execute<T>(_ type: T.Type, token: BookServiceProvider) -> Observable<T> where T: Decodable {
         Observable.just(token)
-            .map { token -> [URLQueryItem] in
+            .map { token -> URL in
+                var params: [URLQueryItem]
+                let urlPath: String
                 switch token {
-                case .searchList(let query):
-                    return [URLQueryItem(name: "q", value: query)]
+                case let .searchList(path, query):
+                    urlPath = path
+                    params = [URLQueryItem(name: "q", value: query)]
                 }
-            }.map { query -> URL in
-                var comp = URLComponents(string: "https://itunes.apple.com/search?")!
-                query.forEach { q in
+                params += [URLQueryItem(name: "key", value: BookService.apiKey)]
+                var comp = URLComponents(string: "\(BookService.baseUrl)\(urlPath)")!
+                params.forEach { q in
                     comp.queryItems?.append(q)
                 }
                 return comp.url!
