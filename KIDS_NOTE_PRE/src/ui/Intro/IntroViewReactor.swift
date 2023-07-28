@@ -51,14 +51,11 @@ class IntroViewReactor: Reactor {
                     if let user = user {
                         return Observable.concat([
                             Observable.just(Mutation.setLoading(true)),
-                            Observable.just(Mutation.setUser(user)),
                             Observable.just(Mutation.setLoading(false)),
+                            Observable.just(Mutation.setUser(user)),
                         ])
                     } else {
-                        return Observable.concat([
-                            Observable.just(Mutation.setLoading(true)),
-                            Observable.just(Mutation.setRequireSignIn(true)),
-                        ])
+                        return Observable.just(Mutation.setRequireSignIn(true))
                     }
                 }
         case .requestAuth(let result):
@@ -86,4 +83,3 @@ class IntroViewReactor: Reactor {
         return state
     }
 }
-
