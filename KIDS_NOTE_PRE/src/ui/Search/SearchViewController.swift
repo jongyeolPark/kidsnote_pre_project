@@ -168,15 +168,10 @@ class SearchViewController: BaseViewController, View {
     }
     
     func bind(reactor: SearchViewReactor) {
-
+        
         let searchTextEmptyObservable = searchField.rx.text.orEmpty
             .asDriver(onErrorJustReturn: "")
             .map { $0.isEmpty }
-        
-//        searchTextEmptyObservable
-//            .drive { isEmpty in
-//                print("searchField: \(isEmpty)")
-//            }.disposed(by: disposeBag)
         
         searchTextEmptyObservable
             .drive(clearButton.rx.isHidden)
@@ -194,7 +189,20 @@ class SearchViewController: BaseViewController, View {
             .disposed(by: disposeBag)
         
         ebookListView.rx.itemSelected
-            .map { Reactor.Action.cellSelected($0) }
+            .map { Reactor.Action.itemSelected($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        ebookListView.rx.modelSelected(TableViewCellSections.self)
+            .compactMap { section in
+                switch section {
+                case let .bookCell(reactor):
+                    return reactor.currentState
+                case .emptyCell:
+                    return nil
+                }
+            }
+            .map { Reactor.Action.modelSelected($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -213,8 +221,7 @@ class SearchViewController: BaseViewController, View {
                     return Observable.empty()
                 }
             }
-//            .throttle(.seconds(1), scheduler: MainScheduler.asyncInstance)
-            .map { Reactor.Action.fetchPaging }
+            .map { Reactor.Action.loadMore }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -236,13 +243,14 @@ class SearchViewController: BaseViewController, View {
                 owner.ebookListView.deselectItem(at: indexPath, animated: true)
             }.disposed(by: disposeBag)
         
-//        reactor.state.map { $0.loading }
-//            .distinctUntilChanged()
-//            .withUnretained(self)
-//            .bind { owner, loading in
-//                print("loading : \(loading)")
-//                owner.showLoadingDialog(loading)
-//            }.disposed(by: disposeBag)
+        reactor.state.compactMap { $0.selectedModel }
+            .withUnretained(self)
+            .bind { owner, book in
+                let vc = DetailViewController()
+                vc.reactor = DetailViewReactor(book: book)
+                self.present(vc, animated: true)
+//                self.navigationController?.pushViewController(vc, animated: true)
+            }.disposed(by: disposeBag)
         
         reactor.state.map { $0.sections }
             .asDriver(onErrorJustReturn: [])

@@ -33,44 +33,25 @@ class BookService: BookServiceProtocol {
     private init() { }
     
     func execute<T>(_ type: T.Type, token: BookServiceProvider) -> Observable<T> where T: Decodable {
-        Observable<T>.create { emit in
-            guard var urlComponents = URLComponents(string: BookService.baseUrl) else {
-                emit.onError(BookServiceError.badUrl)
-                return Disposables.create()
-            }
-            switch token {
-            case let .searchList(path, query, pageNum):
-                let startIndex = SearchQuery.maxResults * (pageNum - 1)
-                urlComponents.path = path
-                urlComponents.queryItems = [
-                    URLQueryItem(name: "q", value: query),
-                    URLQueryItem(name: "maxResults", value: "\(SearchQuery.maxResults)"),
-                    URLQueryItem(name: "startIndex", value: "\(startIndex)"),
-                ]
-            }
-            urlComponents.queryItems?.append(URLQueryItem(name: "key", value: BookService.apiKey))
-            
-            guard let url = urlComponents.url else {
-                emit.onError(BookServiceError.badUrl)
-                return Disposables.create()
-            }
-            
-            Task {
-                do {
-                    let (data, response) = try await URLSession.shared.data(for: URLRequest(url: url))
-                    guard (200..<300).contains((response as? HTTPURLResponse)?.statusCode ?? 0) else {
-                        emit.onError(BookServiceError.invalidResponse)
-                        return
-                    }
-                    let result = try JSONDecoder().decode(type, from: data)
-                    emit.onNext(result)
-                } catch {
-                    emit.onError(error)
-                }
-            }
-            return Disposables.create {
-                emit.onCompleted()
-            }
-        }.observe(on: MainScheduler.asyncInstance)
+        var urlComponents = URLComponents(string: BookService.baseUrl)!
+        switch token {
+        case let .searchList(path, query, pageNum):
+            let startIndex = SearchQuery.maxResults * (pageNum - 1)
+            urlComponents.path = path
+            urlComponents.queryItems = [
+                URLQueryItem(name: "q", value: query),
+                URLQueryItem(name: "maxResults", value: "\(SearchQuery.maxResults)"),
+                URLQueryItem(name: "startIndex", value: "\(startIndex)"),
+            ]
+        }
+        urlComponents.queryItems?.append(URLQueryItem(name: "key", value: BookService.apiKey))
+        
+        guard let url = urlComponents.url else {
+            return .empty()
+        }
+        
+        return URLSession.shared.execute(request: URLRequest(url: url))
+            .map { try JSONDecoder().decode(type, from: $0) }
+            .asObservable()
     }
 }

@@ -76,6 +76,7 @@ class IntroViewController: BaseViewController, View {
             .skip(1)
             .observe(on: MainScheduler.instance)
             .compactMap { $0 }
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .bind { user in
                 let reactor = SearchViewReactor(bookService: BookService.shared, user: user)
                 let vc = SearchViewController()

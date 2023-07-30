@@ -30,6 +30,7 @@ struct Book: Codable {
 
 struct VolumeInfo: Codable {
     let title: String
+    let subtitle: String?
     let authors: [String]?
     let publisher: String?
     let publishedDate: String?

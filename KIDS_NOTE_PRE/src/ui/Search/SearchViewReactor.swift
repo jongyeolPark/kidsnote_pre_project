@@ -24,24 +24,33 @@ class SearchViewReactor: Reactor {
     
     enum Action {
         case searchQuery(String)
-        case fetchPaging
-        case cellSelected(IndexPath)
+        case loadMore
+        
+        case itemSelected(IndexPath)
+        case modelSelected(Book)
     }
     
     enum Mutation {
         case setLoading(Bool)
-        case setSearchList(String, Int, Books)
+        case setQuery(String)
+        case setSearchList(Books, Bool = false)
+        case setCurrentPage(Int)
+
         case setSelectedIndexPath(IndexPath?)
+        case setModelSelected(Book?)
     }
     
     struct State {
         var loading: Bool = false
-        var selectedIndexPath: IndexPath?
-        var sections: [SearchBookSectionModel] = []
-        
         var query: String = ""
-        var pageNum: Int = 1
+        
+        var books: [Book] = []
+        var sections: [SearchBookSectionModel] = []
+        var currentPage: Int = 1
         var totalItems: Int = 0
+        
+        var selectedIndexPath: IndexPath?
+        var selectedModel: Book?
     }
     
     func transform(action: Observable<Action>) -> Observable<Action> {
@@ -51,32 +60,43 @@ class SearchViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case let .searchQuery(query):
-            return Observable.concat([
-                Observable.just(Mutation.setLoading(true)),
-                bookService.execute(Books.self, token: .searchList(query: query, pageNum: 1)).flatMap {
-                    Observable.just(Mutation.setSearchList(query, 1, $0))
+            return bookService.execute(Books.self, token: .searchList(query: query, pageNum: 1))
+                .flatMap {
+                    Observable.just(Mutation.setSearchList($0, false))
+                        .concat(Observable<Mutation>.just(.setLoading(false)))
+                        .concat(Observable<Mutation>.just(.setCurrentPage(1)))
+                        .concat(Observable<Mutation>.just(.setQuery(query)))
                 }
-            ])
-        case .fetchPaging:
-            let query = currentState.query
-            var pageNum = currentState.pageNum
-            let totalItems = currentState.totalItems
-            print("fetchPaging = \(pageNum) / \(currentState.loading)")
-            if currentState.loading, SearchQuery.maxResults * pageNum > totalItems {
-                return Observable.empty()
-            } else {
-                pageNum += 1
-                return Observable.concat([
-                    Observable.just(Mutation.setLoading(true)),
-                    bookService.execute(Books.self, token: .searchList(query: query, pageNum: pageNum + 1)).flatMap {
-                        Observable.just(Mutation.setSearchList(query, pageNum, $0))
-                    }
-                ])
+                .startWith(.setLoading(true))
+        case .loadMore:
+            guard !currentState.loading else {
+                return .empty()
             }
-        case let .cellSelected(indexPath):
+            
+            guard currentState.books.count < currentState.totalItems else {
+                return .empty()
+            }
+
+            let nextPage = currentState.currentPage + 1
+            let query = currentState.query
+            
+            return bookService.execute(Books.self, token: .searchList(query: query, pageNum: nextPage))
+                .catchAndReturn(Books(kind: "-1", totalItems: 0, items: nil))
+                .flatMap {
+                    Observable.just(Mutation.setSearchList($0, true))
+                        .concat(Observable<Mutation>.just(.setLoading(false)))
+                        .concat(Observable<Mutation>.just(.setCurrentPage(nextPage)))
+                }
+                .startWith(.setLoading(true))
+        case let .itemSelected(indexPath):
             return Observable.concat([
                 Observable.just(Mutation.setSelectedIndexPath(indexPath)),
                 Observable.just(Mutation.setSelectedIndexPath(nil))
+            ])
+        case let .modelSelected(model):
+            return Observable.concat([
+                Observable.just(Mutation.setModelSelected(model)),
+                Observable.just(Mutation.setModelSelected(nil))
             ])
         }
     }
@@ -86,30 +106,29 @@ class SearchViewReactor: Reactor {
         switch mutation {
         case let .setLoading(loading):
             state.loading = loading
-        case let .setSearchList(query, pageNum, result):
+        case let .setQuery(query):
             state.query = query
-            state.pageNum = pageNum
+        case let .setSearchList(result, isAppending):
             state.totalItems = result.totalItems
-            state.loading = false
-            
-            print("################")
-            print("query = \(query) / pageNum = \(pageNum) / totalItems = \(result.totalItems)")
-            print("################")
-            
-            if let books = result.items, !books.isEmpty {
-                let items = books.map { TableViewCellSections.bookCell(SearchListBookCellReactor(state: $0)) }
-                if pageNum == 1 {
-                    state.sections = [SearchBookSectionModel(model: (), items: items)]
-                } else {
-                    if let before = state.sections.first?.items {
-                        state.sections = [SearchBookSectionModel(model: (), items: before + items)]
-                    }
-                }
+            let list = result.items ?? []
+            if isAppending {
+                state.books.append(contentsOf: list)
+            } else {
+                state.books = list
+            }
+
+            if !state.books.isEmpty {
+                let items = state.books.map { TableViewCellSections.bookCell(SearchListBookCellReactor(state: $0)) }
+                state.sections = [SearchBookSectionModel(model: (), items: items)]
             } else {
                 state.sections = [SearchBookSectionModel(model: (), items: [TableViewCellSections.emptyCell])]
             }
+        case let .setCurrentPage(currentPage):
+            state.currentPage = currentPage
         case let .setSelectedIndexPath(indexPath):
             state.selectedIndexPath = indexPath
+        case let .setModelSelected(model):
+            state.selectedModel = model
         }
         return state
     }
