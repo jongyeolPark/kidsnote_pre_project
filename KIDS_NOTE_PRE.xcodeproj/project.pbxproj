@@ -16,6 +16,7 @@
 		339734122A77906E00469585 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3397340B2A77906E00469585 /* DividerView.swift */; };
 		339734142A7790D100469585 /* EbookViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734132A7790D100469585 /* EbookViewerViewController.swift */; };
 		339734162A77928300469585 /* ebook_viewer.html in Resources */ = {isa = PBXBuildFile; fileRef = 339734152A77928300469585 /* ebook_viewer.html */; };
+		3397343C2A77A90E00469585 /* RadiusImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3397343B2A77A90E00469585 /* RadiusImageView.swift */; };
 		339C45FC2A7257140024D35D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339C45FB2A7257140024D35D /* AppDelegate.swift */; };
 		339C45FE2A7257140024D35D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339C45FD2A7257140024D35D /* SceneDelegate.swift */; };
 		339C46002A7257140024D35D /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339C45FF2A7257140024D35D /* IntroViewController.swift */; };
@@ -77,6 +78,7 @@
 		3397340B2A77906E00469585 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DividerView.swift; path = KIDS_NOTE_PRE/src/ui/Components/DividerView.swift; sourceTree = SOURCE_ROOT; };
 		339734132A7790D100469585 /* EbookViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EbookViewerViewController.swift; sourceTree = "<group>"; };
 		339734152A77928300469585 /* ebook_viewer.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ebook_viewer.html; sourceTree = "<group>"; };
+		3397343B2A77A90E00469585 /* RadiusImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiusImageView.swift; sourceTree = "<group>"; };
 		339C45F82A7257140024D35D /* KIDS_NOTE_PRE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KIDS_NOTE_PRE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		339C45FB2A7257140024D35D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		339C45FD2A7257140024D35D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				3397340B2A77906E00469585 /* DividerView.swift */,
 				339734082A77906E00469585 /* LoadingView.swift */,
 				339734062A77906E00469585 /* PosterView.swift */,
+				3397343B2A77A90E00469585 /* RadiusImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				33A4AAFE2A76471F004F92AD /* UIColor+Extension.swift in Sources */,
 				33F5DE0F2A73CA1200E6C585 /* SearchListFooter.swift in Sources */,
 				33F5DDE42A73651600E6C585 /* SearchViewController.swift in Sources */,
+				3397343C2A77A90E00469585 /* RadiusImageView.swift in Sources */,
 				339C45FE2A7257140024D35D /* SceneDelegate.swift in Sources */,
 				3397340E2A77906E00469585 /* BaseCollectionViewCell.swift in Sources */,
 				33A4AB002A7648D5004F92AD /* UIView+Extension.swift in Sources */,

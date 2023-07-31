@@ -11,7 +11,9 @@ import Then
 
 class EBookDetailView: UIView {
     
-    let posterView = PosterView()
+    let posterView = RadiusImageView().then {
+        $0.cornerRadius = 16
+    }
     
     let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .medium)

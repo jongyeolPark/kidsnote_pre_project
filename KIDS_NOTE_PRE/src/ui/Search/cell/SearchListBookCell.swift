@@ -18,7 +18,9 @@ class SearchListBookCell: BaseCollectionViewCell, View {
     
     var disposeBag = DisposeBag()
     
-    private let posterView = PosterView()
+    private let posterView = RadiusImageView().then {
+        $0.cornerRadius = 8
+    }
     
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14, weight: .regular)

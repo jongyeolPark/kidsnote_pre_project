@@ -14,13 +14,13 @@ class ImageCacheManager {
     private init() {}
 }
 
-extension UIImageView {
+extension RadiusImageView {
     
     func loadImage(_ url: String) {
         
         let cacheKey = NSString(string: url)
         if let cachedImage = ImageCacheManager.shared.object(forKey: cacheKey) {
-            self.image = cachedImage
+            self.imageView.image = cachedImage
             return
         }
 
@@ -33,7 +33,7 @@ extension UIImageView {
             DispatchQueue.main.async { [weak self] in
                 if let image = UIImage(data: data) {
                     ImageCacheManager.shared.setObject(image, forKey: cacheKey)
-                    self?.image = image
+                    self?.imageView.image = image
                 }
             }
         }
