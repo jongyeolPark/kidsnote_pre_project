@@ -212,13 +212,13 @@
 			path = views;
 			sourceTree = "<group>";
 		};
-		33A4AB172A76826E004F92AD /* EbookInfo */ = {
+		33A4AB172A76826E004F92AD /* BookInfo */ = {
 			isa = PBXGroup;
 			children = (
 				33A4AB182A768286004F92AD /* EbookInfoViewController.swift */,
 				33A4AB1A2A7682AB004F92AD /* EbookInfoViewReactor.swift */,
 			);
-			path = EbookInfo;
+			path = BookInfo;
 			sourceTree = "<group>";
 		};
 		33F5DDE72A73877F00E6C585 /* res */ = {
@@ -296,7 +296,7 @@
 			children = (
 				339734012A77901700469585 /* Viewer */,
 				33A4AB012A764D2A004F92AD /* Detail */,
-				33A4AB172A76826E004F92AD /* EbookInfo */,
+				33A4AB172A76826E004F92AD /* BookInfo */,
 				33F5DDF32A73897400E6C585 /* Intro */,
 				33F5DDF42A73897E00E6C585 /* Search */,
 			);
