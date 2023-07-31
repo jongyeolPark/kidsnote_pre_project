@@ -14,8 +14,9 @@ class EbookInfoViewReactor: Reactor {
     
     var initialState: State
     
-    init() {
-        initialState = State()
+    init(info: VolumeInfo) {
+        initialState = State(title: info.title,
+                             description: info.description)
     }
     enum Action {
         
@@ -26,7 +27,8 @@ class EbookInfoViewReactor: Reactor {
     }
     
     struct State {
-        
+        var title: String?
+        var description: String?
     }
     
     func mutate(action: Action) -> Observable<Mutation> {

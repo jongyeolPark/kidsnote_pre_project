@@ -55,7 +55,7 @@ class IntroViewController: BaseViewController, View {
     
     override func viewSafeAreaInsetsDidChange() {
         signInbutton.snp.updateConstraints { make in
-            make.bottom.equalToSuperview().inset(self.view.safeAreaInsets.bottom)
+            make.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom)
         }
     }
     
@@ -77,13 +77,14 @@ class IntroViewController: BaseViewController, View {
             .observe(on: MainScheduler.instance)
             .compactMap { $0 }
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
-            .bind { user in
-                let reactor = SearchViewReactor(bookService: BookService.shared, user: user)
+            .withUnretained(self)
+            .bind { owner, user in
                 let vc = SearchViewController()
-                vc.reactor = reactor
-                vc.modalTransitionStyle = .crossDissolve
-                vc.modalPresentationStyle = .fullScreen
-                self.present(vc, animated: true)
+                vc.reactor = SearchViewReactor(bookService: BookService.shared, user: user)
+                let navi = BaseNavigationController(rootViewController: vc)
+                navi.modalTransitionStyle = .crossDissolve
+                navi.modalPresentationStyle = .fullScreen
+                owner.present(navi, animated: true)
                 
             }.disposed(by: disposeBag)
         

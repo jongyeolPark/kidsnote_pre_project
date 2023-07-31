@@ -161,6 +161,10 @@ class SearchViewController: BaseViewController, View {
         ebookListView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewSafeAreaInsetsDidChange() {
         searchContainer.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(self.view.safeAreaInsets.top)
@@ -248,8 +252,7 @@ class SearchViewController: BaseViewController, View {
             .bind { owner, book in
                 let vc = DetailViewController()
                 vc.reactor = DetailViewReactor(book: book)
-                self.present(vc, animated: true)
-//                self.navigationController?.pushViewController(vc, animated: true)
+                owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
         
         reactor.state.map { $0.sections }
