@@ -71,8 +71,8 @@ class SearchListBookCell: BaseCollectionViewCell, View {
         }
         
         titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(posterView)
             make.leading.equalTo(posterView.snp.trailing).offset(10)
-            make.top.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
         }
 

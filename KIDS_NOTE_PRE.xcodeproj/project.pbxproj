@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3397340C2A77906E00469585 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734052A77906E00469585 /* BaseNavigationController.swift */; };
-		3397340D2A77906E00469585 /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734062A77906E00469585 /* PosterView.swift */; };
 		3397340E2A77906E00469585 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734072A77906E00469585 /* BaseCollectionViewCell.swift */; };
 		3397340F2A77906E00469585 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734082A77906E00469585 /* LoadingView.swift */; };
 		339734102A77906E00469585 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339734092A77906E00469585 /* BaseViewController.swift */; };
@@ -69,12 +68,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		339734052A77906E00469585 /* BaseNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseNavigationController.swift; path = KIDS_NOTE_PRE/src/ui/Components/BaseNavigationController.swift; sourceTree = SOURCE_ROOT; };
-		339734062A77906E00469585 /* PosterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PosterView.swift; path = KIDS_NOTE_PRE/src/ui/Components/PosterView.swift; sourceTree = SOURCE_ROOT; };
-		339734072A77906E00469585 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseCollectionViewCell.swift; path = KIDS_NOTE_PRE/src/ui/Components/BaseCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		339734052A77906E00469585 /* BaseNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseNavigationController.swift; path = KIDS_NOTE_PRE/src/ui/Base/BaseNavigationController.swift; sourceTree = SOURCE_ROOT; };
+		339734072A77906E00469585 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseCollectionViewCell.swift; path = KIDS_NOTE_PRE/src/ui/Base/BaseCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		339734082A77906E00469585 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingView.swift; path = KIDS_NOTE_PRE/src/ui/Components/LoadingView.swift; sourceTree = SOURCE_ROOT; };
-		339734092A77906E00469585 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseViewController.swift; path = KIDS_NOTE_PRE/src/ui/Components/BaseViewController.swift; sourceTree = SOURCE_ROOT; };
-		3397340A2A77906E00469585 /* CommonFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonFlowLayout.swift; path = KIDS_NOTE_PRE/src/ui/Components/CommonFlowLayout.swift; sourceTree = SOURCE_ROOT; };
+		339734092A77906E00469585 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseViewController.swift; path = KIDS_NOTE_PRE/src/ui/Base/BaseViewController.swift; sourceTree = SOURCE_ROOT; };
+		3397340A2A77906E00469585 /* CommonFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonFlowLayout.swift; path = "KIDS_NOTE_PRE/src/ui/뮨/CommonFlowLayout.swift"; sourceTree = SOURCE_ROOT; };
 		3397340B2A77906E00469585 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DividerView.swift; path = KIDS_NOTE_PRE/src/ui/Components/DividerView.swift; sourceTree = SOURCE_ROOT; };
 		339734132A7790D100469585 /* EbookViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EbookViewerViewController.swift; sourceTree = "<group>"; };
 		339734152A77928300469585 /* ebook_viewer.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ebook_viewer.html; sourceTree = "<group>"; };
@@ -143,6 +141,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		33160E152A7876610078B5B2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				3397340A2A77906E00469585 /* CommonFlowLayout.swift */,
+			);
+			name = Common;
+			path = "뮨";
+			sourceTree = "<group>";
+		};
+		33160E162A78768A0078B5B2 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				339734072A77906E00469585 /* BaseCollectionViewCell.swift */,
+				339734052A77906E00469585 /* BaseNavigationController.swift */,
+				339734092A77906E00469585 /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		339734012A77901700469585 /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,13 +171,8 @@
 		339734042A77906200469585 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				339734072A77906E00469585 /* BaseCollectionViewCell.swift */,
-				339734052A77906E00469585 /* BaseNavigationController.swift */,
-				339734092A77906E00469585 /* BaseViewController.swift */,
-				3397340A2A77906E00469585 /* CommonFlowLayout.swift */,
 				3397340B2A77906E00469585 /* DividerView.swift */,
 				339734082A77906E00469585 /* LoadingView.swift */,
-				339734062A77906E00469585 /* PosterView.swift */,
 				3397343B2A77A90E00469585 /* RadiusImageView.swift */,
 			);
 			path = Components;
@@ -297,6 +309,8 @@
 		33F5DDFB2A738A3D00E6C585 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				33160E162A78768A0078B5B2 /* Base */,
+				33160E152A7876610078B5B2 /* Common */,
 				339734012A77901700469585 /* Viewer */,
 				33A4AB012A764D2A004F92AD /* Detail */,
 				33A4AB172A76826E004F92AD /* BookInfo */,
@@ -471,7 +485,6 @@
 				33A4AB192A768286004F92AD /* EbookInfoViewController.swift in Sources */,
 				33A4AB092A765691004F92AD /* Int+Extension.swift in Sources */,
 				33F5DDFE2A7399B100E6C585 /* UIButton+Extension.swift in Sources */,
-				3397340D2A77906E00469585 /* PosterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

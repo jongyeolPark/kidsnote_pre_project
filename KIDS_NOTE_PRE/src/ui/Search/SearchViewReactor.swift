@@ -61,12 +61,10 @@ class SearchViewReactor: Reactor {
         switch action {
         case let .searchQuery(query):
             return bookService.execute(Books.self, token: .searchList(query: query, pageNum: 1))
-                .flatMap {
-                    Observable.just(Mutation.setSearchList($0, false))
-                        .concat(Observable<Mutation>.just(.setLoading(false)))
-                        .concat(Observable<Mutation>.just(.setCurrentPage(1)))
-                        .concat(Observable<Mutation>.just(.setQuery(query)))
-                }
+                .map { Mutation.setSearchList($0, false) }
+                .concat(Observable<Mutation>.just(.setLoading(false)))
+                .concat(Observable<Mutation>.just(.setCurrentPage(1)))
+                .concat(Observable<Mutation>.just(.setQuery(query)))
                 .startWith(.setLoading(true))
         case .loadMore:
             guard !currentState.loading else {
@@ -81,12 +79,9 @@ class SearchViewReactor: Reactor {
             let query = currentState.query
             
             return bookService.execute(Books.self, token: .searchList(query: query, pageNum: nextPage))
-                .catchAndReturn(Books(kind: "-1", totalItems: 0, items: nil))
-                .flatMap {
-                    Observable.just(Mutation.setSearchList($0, true))
-                        .concat(Observable<Mutation>.just(.setLoading(false)))
-                        .concat(Observable<Mutation>.just(.setCurrentPage(nextPage)))
-                }
+                .map { Mutation.setSearchList($0, true) }
+                .concat(Observable<Mutation>.just(.setLoading(false)))
+                .concat(Observable<Mutation>.just(.setCurrentPage(nextPage)))
                 .startWith(.setLoading(true))
         case let .itemSelected(indexPath):
             return Observable.concat([
